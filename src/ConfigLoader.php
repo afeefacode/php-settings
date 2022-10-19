@@ -2,11 +2,14 @@
 
 namespace Afeefa\Component\Settings;
 
+use Closure;
 use Symfony\Component\Filesystem\Path;
 
 class ConfigLoader
 {
     private array $paths = [];
+
+    private ?Closure $loadConfigFileCallback = null;
 
     public function addPaths()
     {
@@ -22,6 +25,12 @@ class ConfigLoader
         return new ConfigLoaderPath($path);
     }
 
+    public function loadConfigFileCallback(Closure $callback): ConfigLoader
+    {
+        $this->loadConfigFileCallback = $callback;
+        return $this;
+    }
+
     public function load(string $env): Config
     {
         $config = new Config([]);
@@ -35,7 +44,7 @@ class ConfigLoader
                     }
                     $configFile = Path::join($settingDir, $file . '.php');
                     if (file_exists($configFile)) {
-                        $currentConfig = $this->loadConfig($configFile);
+                        $currentConfig = $this->loadConfigFile($configFile);
 
                         $currentConfig = $this->transformPathsToArrays($currentConfig);
 
@@ -75,8 +84,11 @@ class ConfigLoader
         }
     }
 
-    private function loadConfig($configFile)
+    private function loadConfigFile($configFile)
     {
+        if ($this->loadConfigFileCallback) {
+            return ($this->loadConfigFileCallback)($configFile);
+        }
         return require $configFile;
     }
 }
