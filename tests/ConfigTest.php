@@ -6,8 +6,8 @@ use Afeefa\Component\Settings\Config;
 use Afeefa\Component\Settings\ConfigVisitor;
 use Afeefa\Component\Settings\IllegalValueException;
 use Afeefa\Component\Settings\NotFoundException;
-use Afeefa\Component\Settings\Test\TestReflectionUtils;
 use Afeefa\Component\Settings\Test\TypedConfig;
+use Afeefa\Component\TestingUtils\Reflection;
 use PHPUnit\Framework\TestCase;
 
 class ConfigTest extends TestCase
@@ -1168,7 +1168,7 @@ class ConfigTest extends TestCase
 
     protected function getProperty($object, string $name)
     {
-        return TestReflectionUtils::getProperty($object, $name);
+        return Reflection::getProtectedProperty($object, $name);
     }
 }
 

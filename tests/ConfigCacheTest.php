@@ -5,6 +5,7 @@ namespace Tests\Afeefa\Component\Settings;
 use Afeefa\Component\Settings\ConfigCache;
 use Afeefa\Component\Settings\Environment;
 use Afeefa\Component\Settings\Test\ConfigTestTrait;
+use Afeefa\Component\TestingUtils\FileSystem;
 use Kollektiv\Utils\BenchmarkUtils;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
@@ -16,12 +17,14 @@ class ConfigCacheTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->removeCacheFiles(Path::join(__DIR__, 'fixtures', 'cache'));
+        FileSystem::emptyDirectory(Path::join(__DIR__, 'fixtures', 'cache'));
     }
 
     public function test_load()
     {
         $pathCache = Path::join(__DIR__, 'fixtures', 'cache', 'config.php');
+
+        $this->assertFileDoesNotExist($pathCache);
 
         $cache = new ConfigCache($pathCache);
         $this->addPaths($cache);
@@ -45,6 +48,8 @@ class ConfigCacheTest extends TestCase
     public function test_load_from_cache()
     {
         $pathCache = Path::join(__DIR__, 'fixtures', 'cache', 'config.php');
+
+        $this->assertFileDoesNotExist($pathCache);
 
         $cache = new ConfigCache($pathCache);
         $cache->purge();
@@ -72,6 +77,8 @@ class ConfigCacheTest extends TestCase
     {
         $pathCache = Path::join(__DIR__, 'fixtures', 'cache', 'config.php');
 
+        $this->assertFileDoesNotExist($pathCache);
+
         $cache = new ConfigCache($pathCache);
         $cache->purge();
         $this->assertFileDoesNotExist($pathCache);
@@ -96,6 +103,8 @@ class ConfigCacheTest extends TestCase
     public function _test_performance()
     {
         $pathCache = Path::join(__DIR__, 'fixtures', 'cache', 'config.php');
+
+        $this->assertFileDoesNotExist($pathCache);
 
         $cache = new ConfigCache($pathCache);
         $cache->addPaths(
@@ -149,22 +158,6 @@ class ConfigCacheTest extends TestCase
     protected function getPathTestApp()
     {
         return Path::join(__DIR__, '..', 'fixtures', 'testapp');
-    }
-
-    protected function removeCacheFiles(string $cacheDir)
-    {
-        if (file_exists($cacheDir)) {
-            $iterator = new \DirectoryIterator($cacheDir);
-            foreach ($iterator as $file) {
-                if (!$file->isFile()) {
-                    continue;
-                }
-                if (strpos($file->getFilename(), '.') === 0) { // ignore .gitignore
-                    continue;
-                }
-                unlink($file->getRealPath());
-            }
-        }
     }
 
     /**

@@ -6,6 +6,7 @@ use Afeefa\Component\Settings\Config;
 use Afeefa\Component\Settings\ConfigDelegate;
 use Afeefa\Component\Settings\ConfigLoader;
 use Afeefa\Component\Settings\Environment;
+use Afeefa\Component\TestingUtils\Reflection;
 use Symfony\Component\Filesystem\Path;
 
 trait ConfigTestTrait
@@ -81,7 +82,7 @@ trait ConfigTestTrait
         $this->assertEquals('author.plugin.delegates.first', $config->get('localplugin.delegates'));
         $raw = $config->raw('localplugin.delegates');
         $this->assertInstanceOf(ConfigDelegate::class, $raw);
-        $this->assertEquals('author.plugin.delegates.first', TestReflectionUtils::getProperty($raw, 'rootKey'));
+        $this->assertEquals('author.plugin.delegates.first', Reflection::getProtectedProperty($raw, 'rootKey'));
 
         if ($env === Environment::DEVELOPMENT) {
             $this->assertTrue($config->get('localplugin.development'));
@@ -120,7 +121,7 @@ trait ConfigTestTrait
         ], $config->get('testapp.delegates')->toArray());
         $raw = $config->raw('testapp.delegates');
         $this->assertInstanceOf(ConfigDelegate::class, $raw);
-        $this->assertEquals('author.plugin.delegates', TestReflectionUtils::getProperty($raw, 'rootKey'));
+        $this->assertEquals('author.plugin.delegates', Reflection::getProtectedProperty($raw, 'rootKey'));
 
         // global list
 

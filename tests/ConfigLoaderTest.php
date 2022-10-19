@@ -5,7 +5,7 @@ namespace Tests\Afeefa\Component\Settings;
 use Afeefa\Component\Settings\ConfigLoader;
 use Afeefa\Component\Settings\Environment;
 use Afeefa\Component\Settings\Test\ConfigTestTrait;
-use Afeefa\Component\Settings\Test\TestReflectionUtils;
+use Afeefa\Component\TestingUtils\Reflection;
 use PHPUnit\Framework\TestCase;
 
 class ConfigLoaderTest extends TestCase
@@ -190,6 +190,6 @@ class ConfigLoaderTest extends TestCase
 
     private function invokeMethod($object, string $methodName, ...$arguments)
     {
-        return TestReflectionUtils::invokeMethod($object, $methodName, ...$arguments);
+        return Reflection::invokeProtectedMethod($object, $methodName, ...$arguments);
     }
 }
