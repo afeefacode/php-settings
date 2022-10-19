@@ -1,0 +1,14 @@
+{
+    "name": "afeefa/php-settings",
+    "version": "0.0.21",
+    "description": "Store and merge settings of different locations.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Afeefa Kollektiv",
+            "email": "kollektiv@afeefa.de"
+        }
+    ],
+    "require": {}
+}
