@@ -5,8 +5,8 @@ namespace Tests\Afeefa\Component\Settings;
 use Afeefa\Component\Settings\ConfigCache;
 use Afeefa\Component\Settings\Environment;
 use Afeefa\Component\Settings\Test\ConfigTestTrait;
+use Afeefa\Component\TestingUtils\Benchmark;
 use Afeefa\Component\TestingUtils\FileSystem;
-use Kollektiv\Utils\BenchmarkUtils;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Path;
@@ -114,7 +114,7 @@ class ConfigCacheTest extends TestCase
 
         $cache->purge();
 
-        $benchmark = BenchmarkUtils::startBenchmark();
+        $benchmark = Benchmark::startBenchmark();
         debug_dump('START', $benchmark->getDiff());
 
         $config = $cache->load(Environment::PRODUCTION);
