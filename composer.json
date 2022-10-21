@@ -13,7 +13,7 @@
     ],
     "require": {
       "php": ">=7.4",
-        "symfony/filesystem": "^5.4"
+        "symfony/filesystem": "^5.4 || ^6.1"
     },
     "autoload": {
         "psr-4": {
