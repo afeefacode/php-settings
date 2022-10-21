@@ -10,6 +10,6 @@ class Environment
 
     public static function isValid(?string $env): bool
     {
-        return preg_match('/^DEVELOPMENT|TEST|PRODUCTION$/', $env);
+        return preg_match('/^DEVELOPMENT|TEST|PRODUCTION$/', $env ?? '');
     }
 }
