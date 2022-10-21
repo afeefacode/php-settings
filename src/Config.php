@@ -259,6 +259,7 @@ class Config implements \ArrayAccess, \IteratorAggregate
         $this->remove($offset);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset, $default = null)
     {
         return $this->get($offset, $default);
