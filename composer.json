@@ -1,6 +1,6 @@
 {
     "name": "afeefa/php-settings",
-    "version": "0.0.32",
+    "version": "0.0.33",
     "description": "Store and merge settings of different locations.",
     "type": "library",
     "license": "MIT",
