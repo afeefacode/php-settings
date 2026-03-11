@@ -11,6 +11,8 @@ class ConfigLoader
 
     private ?Closure $loadConfigFileCallback = null;
 
+    private ?Closure $determineDeploymentFileKeyCallback = null;
+
     public function addPaths()
     {
         $paths = func_get_args();
@@ -31,6 +33,12 @@ class ConfigLoader
         return $this;
     }
 
+    public function determineDeploymentFileKey(Closure $callback): ConfigLoader
+    {
+        $this->determineDeploymentFileKeyCallback = $callback;
+        return $this;
+    }
+
     public function load(string $env): Config
     {
         $config = new Config([]);
@@ -41,6 +49,15 @@ class ConfigLoader
                 foreach ($path->files as $file) {
                     if ($file === '$ENV') {
                         $file = strtolower($env);
+                    } elseif ($file === '$DEPLOY') {
+                        if (!$this->determineDeploymentFileKeyCallback) {
+                            continue;
+                        }
+                        $deployKey = ($this->determineDeploymentFileKeyCallback)($config);
+                        if (!$deployKey) {
+                            continue;
+                        }
+                        $file = 'deploy.' . $deployKey;
                     }
                     $configFile = Path::join($settingDir, $file . '.php');
                     if (file_exists($configFile)) {
